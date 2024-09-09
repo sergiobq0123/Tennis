@@ -1,0 +1,65 @@
+@startuml
+class Tennis
+class Match
+class Set
+class Game
+class Player
+class Point
+class Action
+class Win
+class ServiceFailure
+class Goal
+class MatchGoal
+class SetGoal
+class PointGoal
+class GameGoal
+class TieBreak
+enum Points {
+0
+15
+30
+40
+AD
+}
+class Service
+class Fault
+class DobleFault
+class StandardGame
+
+Tennis *-down-> "0..N" Match
+
+Match *-down-> "2..5" Set
+Match *-down-> "2" Player
+
+Set *-down-> "6..13" Game
+
+Service -down-> Player
+Service *-down-> "0..N" Fault
+
+Game *-down-> "2" Service
+Game *-down-> "4..n" Point
+Game <|-down- TieBreak
+Game <|-down- StandardGame
+
+Point *-down-> "2" Points
+
+Action <|-down- Win
+Action <|-down- ServiceFailure
+
+Goal <|-down- MatchGoal
+MatchGoal *-down-> SetGoal
+SetGoal *-down-> GameGoal
+GameGoal *-down-> PointGoal
+
+Fault <|-down- DobleFault
+
+Point ..> Win
+Fault ..> ServiceFailure 
+
+Match ..> MatchGoal
+Set ..> SetGoal
+Game ..> GameGoal
+Point ..> PointGoal
+
+
+@enduml
