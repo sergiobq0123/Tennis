@@ -1,22 +1,33 @@
 package models;
 
 public class Point {
+    private int id;
     private Player player1;
     private Player player2;
     private String scorePlayer1;
     private String scorePlayer2;
     private Player playerService;
+    private Player pointWinner;
 
     public Point() {
         this.scorePlayer1 = "0";
         this.scorePlayer2 = "0";
     }
 
-    public Point(Player player1, Player player2) {
+    public Point(int id, Player player1, Player player2) {
+        this.id = id;
         this.player1 = player1;
         this.player2 = player2;
         this.scorePlayer1 = "0";
         this.scorePlayer2 = "0";
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public Player getPlayer1() {
@@ -57,5 +68,26 @@ public class Point {
 
     public void setPlayerService(Player playerService) {
         this.playerService = playerService;
+    }
+
+    public Player getPointWinner() {
+        return pointWinner;
+    }
+
+    public void setPointWinner(Player pointWinner) {
+        this.pointWinner = pointWinner;
+    }
+
+    @Override
+    public String toString() {
+        return "Point{" +
+                "id=" + id +
+                ", player1=" + player1 +
+                ", player2=" + player2 +
+                ", scorePlayer1='" + scorePlayer1 + '\'' +
+                ", scorePlayer2='" + scorePlayer2 + '\'' +
+                ", playerService=" + playerService +
+                ", playerWinner=" + pointWinner +
+                '}';
     }
 }

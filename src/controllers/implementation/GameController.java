@@ -1,14 +1,22 @@
 package controllers.implementation;
 
 import controllers.interfaces.IGameController;
-import models.Player;
+import models.*;
+
+import java.util.List;
 
 public class GameController implements IGameController {
 
     @Override
-    public void createGame(Player player1, Player player2){
+    public void createGame(Match match, Set set, Player player1, Player player2){
         PointController pointController = new PointController();
-        Player player = pointController.createPoint(player1, player2, player1);
-        System.out.println(player);
+        Game game = new Game(1, player1, player2);
+        List<Point> points = game.getPoints();
+
+        points.add(pointController.createPoint(match, set, game, player1, player2, player1));
+        // TODO añadir punto al ganador
+
+        System.out.println(game);
     }
+
 }
