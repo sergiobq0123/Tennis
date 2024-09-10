@@ -1,10 +1,11 @@
 package controllers.implementation;
 
-import models.Match;
+import controllers.interfaces.IGameController;
 import models.Player;
-import models.Set;
 
-public class GameController {
+public class GameController implements IGameController {
+
+    @Override
     public void createGame(Player player1, Player player2){
         PointController pointController = new PointController();
         Player player = pointController.createPoint(player1, player2, player1);

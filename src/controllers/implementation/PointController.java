@@ -1,12 +1,13 @@
 package controllers.implementation;
 
+import controllers.interfaces.IPointController;
 import models.Player;
 import models.Point;
 
 import java.util.Random;
 
-public class PointController {
-    private static final String[] SCORE = { "0", "15", "30", "40", "AD" };
+public class PointController implements IPointController {
+    private static final String[] SCORE = {"0", "15", "30", "40", "AD"};
     private static final int MAX_POINTS = 4;
     private static final int MAX_POINTS_WITH_DEUCE = 5;
     private static final int MAX_CONSECUTIVE_FAULTS = 2;
@@ -23,6 +24,7 @@ public class PointController {
     private int lastPlayerWin = 0;
     Point point = new Point();
 
+    @Override
     public Player createPoint(Player player1, Player player2, Player playerService) {
         setPlayersToPoint(player1, player2, playerService);
         Random random = new Random();
@@ -37,7 +39,7 @@ public class PointController {
 
             displayScore();
 
-            if(!isGameOver){
+            if (!isGameOver) {
                 isGameOver = isWinner();
             }
 
@@ -69,9 +71,9 @@ public class PointController {
                 p2Points--;
                 point.setScorePlayer2(SCORE[p2Points]);
             } else {
-                if(p1Points + 1 == MAX_POINTS_WITH_DEUCE) {
+                if (p1Points + 1 == MAX_POINTS_WITH_DEUCE) {
                     isGameOver = true;
-                }else{
+                } else {
                     p1Points++;
                     point.setScorePlayer1(SCORE[p1Points]);
                 }
@@ -84,7 +86,7 @@ public class PointController {
             } else {
                 if (p2Points + 1 == MAX_POINTS_WITH_DEUCE) {
                     isGameOver = true;
-                }else{
+                } else {
                     p2Points++;
                     point.setScorePlayer2(SCORE[p2Points]);
                 }
@@ -93,7 +95,7 @@ public class PointController {
     }
 
     private boolean isWinner() {
-        return (p1Points >= MAX_POINTS -1 || p2Points >= MAX_POINTS - 1) && Math.abs(p1Points - p2Points) >= 1;
+        return (p1Points >= MAX_POINTS - 1 || p2Points >= MAX_POINTS - 1) && Math.abs(p1Points - p2Points) >= 1;
     }
 
     private void handleFault() {
@@ -112,7 +114,7 @@ public class PointController {
     }
 
     private void displayScore() {
-        boolean isFault = consecutiveFaults == 1 ;
+        boolean isFault = consecutiveFaults == 1;
 
         String player1Prefix = point.getPlayer1().equals(point.getPlayerService())
                 ? (isFault ? "+ " : "* ")
@@ -129,6 +131,6 @@ public class PointController {
     }
 
     private void displayHeader(String pointType) {
-        System.out.println("\nMatch id : 1 > "+ pointType);
+        System.out.println("\nMatch id : 1 > " + pointType);
     }
 }

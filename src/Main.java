@@ -1,4 +1,5 @@
 import controllers.implementation.MatchController;
+import controllers.interfaces.IMatchController;
 import models.Match;
 import models.Player;
 
@@ -14,7 +15,7 @@ public class Main {
 
         Match match = new Match(1, Instant.now(Clock.systemUTC()), 3, player1, player2);
 
-        MatchController matchController = new MatchController();
+        IMatchController matchController = new MatchController();
         matchController.createMatch(match, player1, player2);
     }
 }
