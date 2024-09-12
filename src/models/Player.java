@@ -9,6 +9,9 @@ public class Player {
         this.id = id;
         this.name = name;
     }
+    public Player() {
+
+    }
 
     public int getId() {
         return id;
