@@ -4,7 +4,7 @@ import models.*;
 
 import java.sql.SQLException;
 
-public interface IRegisterController {
+public interface IPlayerController {
     void addPlayer(Player player) throws SQLException;
 
     void getAllPlayers() throws SQLException;

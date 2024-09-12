@@ -1,17 +1,17 @@
 package controllers.implementation;
 
-import controllers.interfaces.IRegisterController;
+import controllers.interfaces.IPlayerController;
 import dao.PlayerDAO;
 import models.Player;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class RegisterController implements IRegisterController {
+public class PlayerController implements IPlayerController {
 
-    private PlayerDAO playerDAO;
+    private final PlayerDAO playerDAO;
 
-    public RegisterController() {
+    public PlayerController() {
         this.playerDAO = new PlayerDAO();
     }
 
@@ -46,6 +46,6 @@ public class RegisterController implements IRegisterController {
 
     @Override
     public void updatePlayer(Player player) throws SQLException {
-            playerDAO.updateUser(player);
+            playerDAO.updatePlayer(player);
     }
 }
