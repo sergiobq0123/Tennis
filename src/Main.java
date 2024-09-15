@@ -3,6 +3,7 @@ import controllers.interfaces.*;
 import models.*;
 
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.time.Clock;
 import java.time.Instant;
@@ -28,10 +29,7 @@ public class Main {
         Player player3 = registerController.getPlayerById(2);
         */
 
-
-        Match match = new Match(1, Instant.now(Clock.systemUTC()), 3, player1, player2);
-
-        IMatchController matchController = new MatchController();
-        matchController.createMatch(match, player1, player2);
+       IMatchController matchController = new MatchController();
+       matchController.createMatch(3,player1, player2);
     }
 }

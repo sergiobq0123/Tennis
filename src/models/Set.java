@@ -1,21 +1,22 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Set {
     private int id;
+    private int idPlayer1;
+    private int idPlayer2;
     private int idMatch;
-    private Player player1;
-    private Player player2;
-    private List<Game> games;
+    private Integer gamesPlayer1;
+    private Integer gamesPlayer2;
+    private Integer idSetWinner;
 
-    public Set(int id, int idMatch, Player player1, Player player2) {
+    public Set() {
+    }
+
+    public Set (int id, int idPlayer1, int idPlayer2, int idMatch) {
         this.id = id;
+        this.idPlayer1 = idPlayer1;
+        this.idPlayer2 = idPlayer2;
         this.idMatch = idMatch;
-        this.player1 = player1;
-        this.player2 = player2;
-        this.games = new ArrayList<>();
     }
 
     public int getId() {
@@ -34,27 +35,43 @@ public class Set {
         this.idMatch = idMatch;
     }
 
-    public Player getPlayer1() {
-        return player1;
+    public int getIdPlayer1() {
+        return idPlayer1;
     }
 
-    public void setPlayer1(Player player1) {
-        this.player1 = player1;
+    public void setIdPlayer1(int idPlayer1) {
+        this.idPlayer1 = idPlayer1;
     }
 
-    public Player getPlayer2() {
-        return player2;
+    public Integer getGamesPlayer1() {
+        return gamesPlayer1;
     }
 
-    public void setPlayer2(Player player2) {
-        this.player2 = player2;
+    public void setGamesPlayer1(Integer gamesPlayer1) {
+        this.gamesPlayer1 = gamesPlayer1;
     }
 
-    public List<Game> getGames() {
-        return games;
+    public int getIdPlayer2() {
+        return idPlayer2;
     }
 
-    public void setGames(List<Game> games) {
-        this.games = games;
+    public void setIdPlayer2(int idPlayer2) {
+        this.idPlayer2 = idPlayer2;
+    }
+
+    public Integer getGamesPlayer2() {
+        return gamesPlayer2;
+    }
+
+    public void setGamesPlayer2(Integer gamesPlayer2) {
+        this.gamesPlayer2 = gamesPlayer2;
+    }
+
+    public Integer getIdSetWinner() {
+        return idSetWinner;
+    }
+
+    public void setIdSetWinner(Integer idSetWinner) {
+        this.idSetWinner = idSetWinner;
     }
 }
