@@ -19,11 +19,11 @@ CREATE TABLE IF NOT EXISTS POINT (
     );
 
 CREATE TABLE IF NOT EXISTS GAME (
-                                    id INT AUTO_INCREMENT PRIMARY KEY,
-                                    id_payer1 INT NOT NULL,
-                                    id_player2 INT NOT NULL,
-                                    id_set INT NOT NULL,
-                                    points_player1 INT,
-                                    points_player2 INT,
-                                    id_game_winner INT
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_payer1 INT NOT NULL,
+    id_player2 INT NOT NULL,
+    id_set INT NOT NULL,
+    points_player1 INT,
+    points_player2 INT,
+    id_game_winner INT
 )

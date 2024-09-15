@@ -19,7 +19,7 @@ public class PointController implements IPointController {
     private static final String POINT_REST = "Point Rest";
 
 
-    private static int idMatchShow;
+    private int idMatchShow;
     private int nameWidth;
     private String namePlayer1Show;
     private String namePlayer2Show;
@@ -34,9 +34,9 @@ public class PointController implements IPointController {
     PointDAO pointDAO = new PointDAO();
 
     @Override
-    public Point createPoint( int idGame, int idPlayer1, int idPlayer2, int idPlayerService, String namePlayer1, String namePlayer2, int idMatch) throws SQLException {
-        setPlayersToPoint(idGame, idPlayer1, idPlayer2, idPlayerService);
-        setPlayersName(namePlayer1, namePlayer2, idMatch);
+    public Point createPoint( int idGame, Player player1, Player player2, int idPlayerService,  int idMatch) throws SQLException {
+        setPlayersToPoint(idGame, player1.getId(), player2.getId(), idPlayerService);
+        setPlayersName(player1.getName(), player2.getName(), idMatch);
         displayScore();
         generateRandomPoint();
         pointDAO.updatePoint(point);
@@ -142,9 +142,7 @@ public class PointController implements IPointController {
     }
 
     private void verifyIsDeuce() {
-        if (p1Points == FORTY_POINTS && p2Points == FORTY_POINTS) {
-            isDeuce = true;
-        }
+        isDeuce = p1Points == FORTY_POINTS && p2Points == FORTY_POINTS;
     }
 
     private void handleFault() {

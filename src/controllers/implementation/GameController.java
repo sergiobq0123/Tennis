@@ -50,7 +50,7 @@ public class GameController implements IGameController {
         while (game.getIdGameWinner() == null) {
             pointController = new PointController();
             Player currentServer = isPlayer1Serving ? player1 : player2;
-            Point point = pointController.createPoint(game.getId(), player1.getId(), player2.getId(), currentServer.getId(), player1.getName(), player2.getName(), match.getId());
+            Point point = pointController.createPoint(game.getId(), player1, player2, currentServer.getId(), match.getId());
 
             if (point.getIdPointWinner() == game.getIdPlayer1()) {
                 sumPointsPlayer1++;
