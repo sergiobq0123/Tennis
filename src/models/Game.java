@@ -5,20 +5,22 @@ import java.util.List;
 
 public class Game {
     private int id;
-    private Player player1;
-    private Player player2;
-    private List<Point> points;
-    private int pointsPlayer1;
-    private int pointsPlayer2;
-    private Player gameWinner;
+    private int idPlayer1;
+    private int idPlayer2;
+    private int idSet;
+    private Integer pointsPlayer1;
+    private Integer pointsPlayer2;
+    private Integer idGameWinner;
 
-    public Game(int id, Player player1, Player player2) {
+    public Game() {
+
+    }
+
+    public Game(int id, int idPlayer1, int idPlayer2, int idSet) {
         this.id = id;
-        this.player1 = player1;
-        this.player2 = player2;
-        this.points = new ArrayList<>();
-        this.pointsPlayer1 = 0;
-        this.pointsPlayer2 = 0;
+        this.idPlayer1 = idPlayer1;
+        this.idPlayer2 = idPlayer2;
+        this.idSet = idSet;
     }
 
     public int getId() {
@@ -29,51 +31,51 @@ public class Game {
         this.id = id;
     }
 
-    public Player getPlayer1() {
-        return player1;
+    public int getIdPlayer1() {
+        return idPlayer1;
     }
 
-    public void setPlayer1(Player player1) {
-        this.player1 = player1;
+    public void setIdPlayer1(int idPlayer1) {
+        this.idPlayer1 = idPlayer1;
     }
 
-    public Player getPlayer2() {
-        return player2;
+    public int getIdPlayer2() {
+        return idPlayer2;
     }
 
-    public void setPlayer2(Player player2) {
-        this.player2 = player2;
+    public void setIdPlayer2(int idPlayer2) {
+        this.idPlayer2 = idPlayer2;
     }
 
-    public List<Point> getPoints() {
-        return points;
+    public int getIdSet() {
+        return idSet;
     }
 
-    public void setPoints(List<Point> points) {
-        this.points = points;
+    public void setIdSet(int idSet) {
+        this.idSet = idSet;
     }
 
-    public int getPointsPlayer1() {
+    public Integer getPointsPlayer1() {
         return pointsPlayer1;
     }
 
-    public void setPointsPlayer1(int pointsPlayer1) {
+    public void setPointsPlayer1(Integer pointsPlayer1) {
         this.pointsPlayer1 = pointsPlayer1;
     }
 
-    public int getPointsPlayer2() {
+    public Integer getPointsPlayer2() {
         return pointsPlayer2;
     }
 
-    public void setPointsPlayer2(int pointsPlayer2) {
+    public void setPointsPlayer2(Integer pointsPlayer2) {
         this.pointsPlayer2 = pointsPlayer2;
     }
 
-    public Player getGameWinner() {
-        return gameWinner;
+    public Integer getIdGameWinner() {
+        return idGameWinner;
     }
 
-    public void setGameWinner(Player gameWinner) {
-        this.gameWinner = gameWinner;
+    public void setIdGameWinner(Integer idGameWinner) {
+        this.idGameWinner = idGameWinner;
     }
 }
