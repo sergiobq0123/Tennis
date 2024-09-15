@@ -113,8 +113,8 @@ public class PointDAO {
         }
     }
 
-    public void deletePoint(int id) throws SQLException {
-        String query = "DELETE FROM POINT WHERE id = ?";
+    public void deleteGame(int id) throws SQLException {
+        String query = "DELETE FROM GAME WHERE id = ?";
         try (Connection conn = connector.getConnection();
              PreparedStatement statement = conn.prepareStatement(query)) {
             statement.setInt(1, id);

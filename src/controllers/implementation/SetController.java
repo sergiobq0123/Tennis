@@ -13,7 +13,14 @@ public class SetController implements ISetController {
     @Override
     public void createSet(Match match, Player player1, Player player2) throws SQLException {
         Set set = new Set(1, match.getId(), player1, player2);
-        IGameController gameController = new GameController();
+        IGameController gameController;
+        /**
+        for (int i = 0; i < 100 ; i++) {
+            gameController = new GameController();
+            gameController.createGame(match, set, player1, player2);
+        }
+         */
+        gameController = new GameController();
         gameController.createGame(match, set, player1, player2);
     }
 }
