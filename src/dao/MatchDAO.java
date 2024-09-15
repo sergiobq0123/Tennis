@@ -2,8 +2,6 @@ package dao;
 
 import dao.connector.Connector;
 import models.Match;
-import models.Player;
-import models.Set;
 
 import java.sql.*;
 import java.util.ArrayList;

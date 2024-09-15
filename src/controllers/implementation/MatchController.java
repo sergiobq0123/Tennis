@@ -3,8 +3,6 @@ package controllers.implementation;
 import controllers.interfaces.IMatchController;
 
 import dao.MatchDAO;
-import dao.SetDao;
-import models.Game;
 import models.Match;
 import models.Player;
 import models.Set;
@@ -50,11 +48,11 @@ public class MatchController implements IMatchController {
             } else {
                 sumSetsPlayer2++;
             }
-            verifyWinner(set.getIdSetWinner());
+            verifyWinner();
         }
     }
 
-    private void verifyWinner(int idGameWinner) throws SQLException {
+    private void verifyWinner() throws SQLException {
         boolean player1HasWon = sumSetsPlayer1 >= Math.ceil((double) setsNumber / 2);
         boolean player2HasWon = sumSetsPlayer2 >= Math.ceil((double) setsNumber / 2);
         if (player1HasWon) {
