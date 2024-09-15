@@ -76,7 +76,7 @@ public class SetController implements ISetController {
     private void updateSet(int idWinner) throws SQLException {
         set.setIdSetWinner(idWinner);
         set.setGamesPlayer1(sumGamesPlayer1);
-        set.setGamesPlayer1(sumGamesPlayer2);
+        set.setGamesPlayer2(sumGamesPlayer2);
 
         setDAO.updateSet(set);
     }
