@@ -1,33 +1,28 @@
 package models;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.Date;
 
 public class Match {
 
     private int id;
-    private Instant date;
+    private Date date;
     private int setsNumber;
-    private Player player1;
-    private Player player2;
-    private List<Set> sets;
+    private int idPlayer1;
+    private int idPlayer2;
+    private Integer setsPlayer1;
+    private Integer setsPlayer2;
+    private Integer idMatchWinner;
 
-    public Match(int id, Instant date, int setsNumber, Player player1, Player player2) {
+    public Match(int id, int setsNumber, int idPlayer1, int idPlayer2) {
         this.id = id;
-        this.date = date;
+        this.date = new Date(System.currentTimeMillis());
         this.setsNumber = setsNumber;
-        this.player1 = player1;
-        this.player2 = player2;
+        this.idPlayer1 = idPlayer1;
+        this.idPlayer2 = idPlayer2;
     }
 
-    public Match(int id, Instant date, int setsNumber, Player player1, Player player2, List<Set> sets) {
-        this.id = id;
-        this.date = date;
-        this.setsNumber = setsNumber;
-        this.player1 = player1;
-        this.player2 = player2;
-        this.sets = new ArrayList<>();
+    public Match() {
+        this.date = new Date(System.currentTimeMillis());
     }
 
     public int getId() {
@@ -38,11 +33,11 @@ public class Match {
         this.id = id;
     }
 
-    public Instant getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(Instant date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -54,27 +49,43 @@ public class Match {
         this.setsNumber = setsNumber;
     }
 
-    public Player getPlayer1() {
-        return player1;
+    public int getIdPlayer1() {
+        return idPlayer1;
     }
 
-    public void setPlayer1(Player player1) {
-        this.player1 = player1;
+    public void setIdPlayer1(int idPlayer1) {
+        this.idPlayer1 = idPlayer1;
     }
 
-    public Player getPlayer2() {
-        return player2;
+    public int getIdPlayer2() {
+        return idPlayer2;
     }
 
-    public void setPlayer2(Player player2) {
-        this.player2 = player2;
+    public void setIdPlayer2(int idPlayer2) {
+        this.idPlayer2 = idPlayer2;
     }
 
-    public List<Set> getSets() {
-        return sets;
+    public Integer getSetsPlayer1() {
+        return setsPlayer1;
     }
 
-    public void setSets(List<Set> sets) {
-        this.sets = sets;
+    public void setSetsPlayer1(Integer setsPlayer1) {
+        this.setsPlayer1 = setsPlayer1;
+    }
+
+    public Integer getSetsPlayer2() {
+        return setsPlayer2;
+    }
+
+    public void setSetsPlayer2(Integer setsPlayer2) {
+        this.setsPlayer2 = setsPlayer2;
+    }
+
+    public Integer getIdMatchWinner() {
+        return idMatchWinner;
+    }
+
+    public void setIdMatchWinner(Integer idMatchWinner) {
+        this.idMatchWinner = idMatchWinner;
     }
 }

@@ -5,7 +5,6 @@ import dao.GameDAO;
 import models.*;
 
 import java.sql.SQLException;
-import java.util.List;
 
 public class GameController implements IGameController {
     private static final int WINNING_POINTS = 6;
@@ -26,9 +25,10 @@ public class GameController implements IGameController {
 
 
     @Override
-    public void createGame(Match match, Set set, Player player1, Player player2) throws SQLException {
+    public Game createGame(Match match, Set set, Player player1, Player player2) throws SQLException {
         initializeValues(match, player1, player2, set);
         simulateGame();
+        return game;
     }
 
     private void initializeValues(Match match, Player player1, Player player2, Set set) throws SQLException {
