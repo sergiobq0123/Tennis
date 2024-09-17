@@ -1,6 +1,8 @@
 package controllers.implementation;
 
 import controllers.interfaces.IPointController;
+import dao.MatchDAO;
+import dao.PlayerDAO;
 import dao.PointDAO;
 import models.*;
 
@@ -12,42 +14,129 @@ public class PointController implements IPointController {
     private static final int FORTY_POINTS = 3;
     private static final int AD_POINTS = 4;
     private static final int MAX_CONSECUTIVE_FAULTS = 2;
-
+    private static final int WINNING_POINTS = 7;
+    private static final int MINIMUM_LEAD = 2;
     private static final String LACK_SERVICE = "Lack Service";
     private static final String SECOND_LACK_SERVICE = "Second Lack Service";
     private static final String POINT_SERVICE = "Point Service";
     private static final String POINT_REST = "Point Rest";
 
-
     private int idMatchShow;
     private int nameWidth;
     private String namePlayer1Show;
     private String namePlayer2Show;
-    private int p1Points = 0;
-    private int p2Points = 0;
-    private int consecutiveFaults = 0;
-    private int lastPlayerWin = 0;
-    private boolean isDeuce = false;
+    private int p1Points;
+    private int p2Points;
+    private int consecutiveFaults;
+    private int lastPlayerWin;
+    private boolean isDeuce;
+    private boolean hasWinner;
+    private int sumPointsPlayer1;
+    private int sumPointsPlayer2;
+    private int idWinner;
 
-    Point point;
-    Random random;
-    PointDAO pointDAO = new PointDAO();
+    private Point point;
+    private Random random;
+    private final PointDAO pointDAO;
+
+    public PointController() {
+        this.pointDAO = new PointDAO();
+        this.random = new Random();
+    }
 
     @Override
-    public Point createPoint( int idGame, Player player1, Player player2, int idPlayerService,  int idMatch) throws SQLException {
-        setPlayersToPoint(idGame, player1.getId(), player2.getId(), idPlayerService);
-        setPlayersName(player1.getName(), player2.getName(), idMatch);
+    public int generatePointsForGame(Match match, Set set, Game game, int currentService) throws SQLException {
+        initialNames(match);
+        reset();
+        initializeValues(game, currentService);
         displayScore();
         generateRandomPoint();
         pointDAO.updatePoint(point);
-        return point;
+        return point.getIdPointWinner();
     }
 
-    private void setPlayersToPoint(int idGame,int idPlayer1, int idPlayer2, int idPlayerService) throws SQLException {
-        point = new Point();
-        point.setIdGame(idGame);
-        point.setIdPlayer1(idPlayer1);
-        point.setIdPlayer2(idPlayer2);
+    @Override
+    public int generatePointsForTieBreak(Match match, Set set, Game game, int currentService) throws SQLException {
+        initialNames(match);
+        reset();
+        displayScore();
+        generateRandomTieBreakPoint(match, game, currentService);
+        return idWinner;
+    }
+
+    private void initialNames(Match match) throws SQLException {
+        PlayerDAO playerDAO = new PlayerDAO();
+        Player player1 = playerDAO.getPlayer(match.getIdPlayer1());
+        Player player2 = playerDAO.getPlayer(match.getIdPlayer2());
+        setPlayersName(player1.getName(), player2.getName(), match.getId());
+    }
+
+    private void generateRandomTieBreakPoint(Match match, Game game, int currentService) throws SQLException {
+        point = new Point(game.getId(), match.getIdPlayer1(), match.getIdPlayer2());
+        pointDAO.addPoint(point);
+        int totalPoints = 0;
+
+        while (!hasWinner) {
+            generatePointTieBreak(random.nextInt(2));
+            currentService = getNextServer(totalPoints, currentService, match);
+            point.setIdPlayerService(currentService);
+
+            totalPoints++;
+        }
+    }
+
+    private void generatePointTieBreak(int action) throws SQLException {
+        switch (action) {
+            case 0 -> {
+                sumPointsPlayer1++;
+                idWinner = point.getIdPlayer1();
+            }
+            case 1 -> {
+                sumPointsPlayer2++;
+                idWinner = point.getIdPlayer2();
+            }
+        }
+        checkWinnerForTieBreakPoint();
+
+        updatePoint(point);
+
+        displayScore();
+    }
+
+    private int getNextServer(int totalPoints, int currentService, Match match) {
+        if (totalPoints == 0) {
+            return currentService;
+        }
+        if (totalPoints % 2 == 1) {
+            return currentService == match.getIdPlayer1() ? match.getIdPlayer2() : match.getIdPlayer1();
+        }
+        return currentService;
+    }
+
+    private void checkWinnerForTieBreakPoint() {
+        boolean player1HasWon = sumPointsPlayer1 >= WINNING_POINTS && (sumPointsPlayer1 - sumPointsPlayer2) >= MINIMUM_LEAD;
+        boolean player2HasWon = sumPointsPlayer2 >= WINNING_POINTS && (sumPointsPlayer2 - sumPointsPlayer1) >= MINIMUM_LEAD;
+
+        if (player1HasWon || player2HasWon) {
+            hasWinner = true;
+        }
+    }
+
+    private void updatePoint(Point point) throws SQLException {
+
+        point.setScorePlayer1(String.valueOf(sumPointsPlayer1));
+        point.setScorePlayer2(String.valueOf(sumPointsPlayer2));
+        point.setIdPointWinner(idWinner);
+
+        pointDAO.updatePoint(point);
+    }
+
+    private void initializeValues(Game game, int idPlayerService) throws SQLException {
+        Point point = new Point();
+        this.point = point;
+        point.setIdGame(game.getId());
+        point.setIdPlayer1(game.getIdPlayer1());
+        point.setIdPlayer2(game.getIdPlayer2());
         point.setIdPlayerService(idPlayerService);
 
         pointDAO.addPoint(point);
@@ -61,7 +150,6 @@ public class PointController implements IPointController {
     }
 
     private void generateRandomPoint() {
-        random = new Random();
         while (point.getIdPointWinner() == null) {
             int action = random.nextInt(3);
             switch (action) {
@@ -113,9 +201,7 @@ public class PointController implements IPointController {
                     p2Points--;
                     point.setScorePlayer2(SCORE[p2Points]);
                     p1Points--;
-                } else {
-                    point.setScorePlayer1(SCORE[p1Points]);
-                }
+                } else point.setScorePlayer1(SCORE[p1Points]);
             }
         } else {
             p2Points++;
@@ -125,9 +211,7 @@ public class PointController implements IPointController {
                     p1Points--;
                     point.setScorePlayer1(SCORE[p1Points]);
                     p2Points--;
-                } else {
-                    point.setScorePlayer2(SCORE[p2Points]);
-                }
+                } else point.setScorePlayer2(SCORE[p2Points]);
             }
         }
     }
@@ -158,11 +242,11 @@ public class PointController implements IPointController {
     }
 
     private void displayHeader(String pointType) {
-        System.out.println("\nMatch id : "+ idMatchShow +" > " + pointType);
+        System.out.println("\nMatch id : " + idMatchShow + " > " + pointType);
     }
 
     private void displayScore() {
-        if (point.getIdPointWinner() == null) {
+        if (!hasWinner) {
             boolean isFault = consecutiveFaults == 1;
 
             String player1Prefix = point.getIdPlayer1() == point.getIdPlayerService() ? (isFault ? "+ " : "* ") : "  ";
@@ -179,4 +263,15 @@ public class PointController implements IPointController {
         }
     }
 
+    private void reset() {
+        p1Points = 0;
+        p2Points = 0;
+        consecutiveFaults = 0;
+        lastPlayerWin = 0;
+        isDeuce = false;
+        sumPointsPlayer1 = 0;
+        sumPointsPlayer2 = 0;
+        hasWinner = false;
+        idWinner = 0;
+    }
 }

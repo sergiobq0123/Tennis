@@ -1,83 +1,86 @@
 package controllers.implementation;
 
+import controllers.interfaces.IGameController;
 import controllers.interfaces.ISetController;
 import dao.SetDao;
-import models.Game;
 import models.Match;
-import models.Player;
 import models.Set;
 
 import java.sql.SQLException;
 
 public class SetController implements ISetController {
-    private static final int WINNING_GAMES = 6;
-    private static final int MINIMUM_LEAD = 2;
 
-    private int sumGamesPlayer1;
-    private int sumGamesPlayer2;
+    private static final int WINNING_SETS_3 = 2;
+    private static final int WINNING_SETS_5 = 3;
 
-    private boolean isTieBreak = false;
+    private int numberOfSets;
+    private int setsWonPlayer1;
+    private int setsWonPlayer2;
+    private boolean hasWinner = false;
+    private int setWinnerId;
 
-    Set set;
-    SetDao setDAO = new SetDao();
-    GameController gameController;
-    Player player1;
-    Player player2;
-    Match match;
+    private final IGameController gameController;
+    private final SetDao setDao;
+
+    public SetController() {
+        reset();
+        gameController = new GameController();
+        setDao = new SetDao();
+    }
 
     @Override
-    public Set createSet(Match match, Player player1, Player player2) throws SQLException {
-        initializeValues(match, player1, player2);
-        simulateSet();
-        return set;
+    public int generateSetsForMatch(Match match) throws SQLException {
+        numberOfSets = match.getSetsNumber();
+        simulateSets(match);
+        return setWinnerId;
     }
 
-    private void initializeValues(Match match, Player player1, Player player2) throws SQLException {
-        this.player1 = player1;
-        this.player2 = player2;
-        this.match = match;
-
-        set = new Set();
-        set.setIdPlayer1(player1.getId());
-        set.setIdPlayer2(player2.getId());
-        set.setIdMatch(match.getId());
-        setDAO.addSet(set);
-    }
-
-    private void simulateSet() throws SQLException {
-        while (set.getIdSetWinner() == null) {
-            gameController = new GameController();
-            Game game = gameController.createGame(match, set, player1, player2);
-            if (game.getIdGameWinner() == game.getIdPlayer1()) {
-                sumGamesPlayer1++;
-            } else {
-                sumGamesPlayer2++;
-            }
-            if (!this.isTieBreak) {
-                verifyWinnerNormalSet();
-            } else {
-                updateSet(game.getIdGameWinner());
-            }
+    private void simulateSets(Match match) throws SQLException {
+        while (!hasWinner) {
+            playSet(match);
         }
     }
 
-    private void verifyWinnerNormalSet() throws SQLException {
-        boolean player1HasWon = sumGamesPlayer1 >= WINNING_GAMES && (sumGamesPlayer1 - sumGamesPlayer2) >= MINIMUM_LEAD;
-        boolean player2HasWon = sumGamesPlayer2 >= WINNING_GAMES && (sumGamesPlayer2 - sumGamesPlayer1) >= MINIMUM_LEAD;
-        if (player1HasWon) {
-            updateSet(player1.getId());
-        } else if (player2HasWon) {
-            updateSet(player2.getId());
-        }
-        if (sumGamesPlayer1 == WINNING_GAMES && sumGamesPlayer2 == WINNING_GAMES) {
-            isTieBreak = true;
+    private void playSet(Match match) throws SQLException {
+        Set currentSet = new Set(match.getId(), match.getIdPlayer1(), match.getIdPlayer2());
+        setDao.addSet(currentSet);
+
+        int gameWinnerId = gameController.generateGamesForSet(match, currentSet);
+
+        if (gameWinnerId == currentSet.getIdPlayer1()) setsWonPlayer1++;
+        else setsWonPlayer2++;
+        setWinnerId = gameWinnerId;
+
+        checkWinner();
+
+        updateSet(currentSet);
+    }
+
+    private void checkWinner() {
+        if (numberOfSets == WINNING_SETS_3) {
+            checkWinnerForSets(WINNING_SETS_3);
+        } else if (numberOfSets == WINNING_SETS_5) {
+            checkWinnerForSets(WINNING_SETS_5);
         }
     }
-    private void updateSet(int idWinner) throws SQLException {
-        set.setIdSetWinner(idWinner);
-        set.setGamesPlayer1(sumGamesPlayer1);
-        set.setGamesPlayer2(sumGamesPlayer2);
 
-        setDAO.updateSet(set);
+    private void checkWinnerForSets(int setsToWin) {
+        if (setsWonPlayer1 == setsToWin || setsWonPlayer2 == setsToWin) hasWinner = true;
+    }
+
+    private void updateSet(Set set) throws SQLException {
+        set.setGamesPlayer1(setsWonPlayer1);
+        set.setGamesPlayer2(setsWonPlayer2);
+        set.setIdSetWinner(setWinnerId);
+
+        setDao.updateSet(set);
+    }
+
+    private void reset() {
+        numberOfSets = 0;
+        setsWonPlayer1 = 0;
+        setsWonPlayer2 = 0;
+        hasWinner = false;
+        setWinnerId = 0;
     }
 }

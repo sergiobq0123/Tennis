@@ -34,8 +34,8 @@ public class GameDAO {
             statement.setInt(1, game.getIdPlayer1());
             statement.setInt(2, game.getIdPlayer2());
             statement.setInt(3, game.getIdSet());
-            statement.setObject(4, game.getPointsPlayer1() != null ? game.getIdGameWinner() : null, Types.INTEGER);
-            statement.setObject(5, game.getPointsPlayer2() != null ? game.getIdGameWinner() : null, Types.INTEGER);
+            statement.setInt(4, game.getPointsPlayer1());
+            statement.setInt(5, game.getPointsPlayer2());
             statement.setObject(6, game.getIdGameWinner() != null ? game.getIdGameWinner() : null, Types.INTEGER);
 
             int affectedRows = statement.executeUpdate();

@@ -15,13 +15,12 @@ public class Point {
         this.scorePlayer2 = "0";
     }
 
-    public Point(int id,int id_set, int id_game, int id_player1, int id_player2) {
-        this.id = id;
-        this.idPlayer1 = id_player1;
-        this.idPlayer2 = id_player2;
+    public Point(int idGame, int idPlayer1, int idPlayer2) {
+        this.idPlayer1 = idPlayer1;
+        this.idPlayer2 = idPlayer2;
         this.scorePlayer1 = "0";
         this.scorePlayer2 = "0";
-        this.idGame = id_game;
+        this.idGame = idGame;
     }
 
     public int getId() {

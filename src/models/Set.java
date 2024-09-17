@@ -12,11 +12,10 @@ public class Set {
     public Set() {
     }
 
-    public Set (int id, int idPlayer1, int idPlayer2, int idMatch) {
-        this.id = id;
+    public Set ( int idMatch, int idPlayer1, int idPlayer2) {
+        this.idMatch = idMatch;
         this.idPlayer1 = idPlayer1;
         this.idPlayer2 = idPlayer2;
-        this.idMatch = idMatch;
     }
 
     public int getId() {

@@ -23,8 +23,8 @@ CREATE TABLE IF NOT EXISTS GAME (
     id_player1 INT NOT NULL,
     id_player2 INT NOT NULL,
     id_set INT NOT NULL,
-    points_player1 INT,
-    points_player2 INT,
+    points_player1 VARCHAR(255),
+    points_player2 VARCHAR(255),
     id_game_winner INT
 );
 

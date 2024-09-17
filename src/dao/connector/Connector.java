@@ -11,13 +11,8 @@ public class Connector {
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(DB_URL, user, password);
-            if(conn != null) {
-                System.out.println("Connected to the database");
-            }
-            else {
-                System.out.println("Failed to connect to the database");
-            }
         } catch (SQLException e) {
+            System.out.println("Failed to Connect to database");
             System.out.println("SQL State: "+e.getSQLState()+"\n"+e.getMessage());
         } catch (Exception e) {
             e.printStackTrace();

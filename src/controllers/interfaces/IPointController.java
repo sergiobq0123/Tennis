@@ -5,5 +5,6 @@ import models.*;
 import java.sql.SQLException;
 
 public interface IPointController {
-    Point createPoint(int game, Player player1, Player player2, int playerService, int idMatch) throws SQLException;
+    int generatePointsForGame(Match match, Set set, Game game, int currentService) throws SQLException;
+    int generatePointsForTieBreak(Match match, Set set, Game game, int currentService) throws SQLException;
 }
