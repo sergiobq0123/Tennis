@@ -11,6 +11,7 @@ public class Game {
     private int pointsPlayer1;
     private int pointsPlayer2;
     private Integer idGameWinner;
+    private boolean gameOver;
 
     public Game() {
 
@@ -22,6 +23,7 @@ public class Game {
         this.idSet = idSet;
         this.pointsPlayer1 = 0;
         this.pointsPlayer2 = 0;
+        this.gameOver = false;
     }
 
     public int getId() {
@@ -78,5 +80,13 @@ public class Game {
 
     public void setIdGameWinner(Integer idGameWinner) {
         this.idGameWinner = idGameWinner;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
     }
 }

@@ -88,6 +88,10 @@ public class GameController implements IGameController {
         game.setPointsPlayer2(sumPointsPlayer2);
         game.setIdGameWinner(idWinner);
 
+        if(hasWinner) {
+            game.setGameOver(true);
+        }
+
         gameDAO.updateGame(game);
     }
 

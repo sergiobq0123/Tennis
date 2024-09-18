@@ -46,8 +46,8 @@ public class PointController implements IPointController {
 
     @Override
     public int generatePointsForGame(Match match, Set set, Game game, int currentService) throws SQLException {
-        initialNames(match);
         reset();
+        initialNames(match);
         initializeValues(game, currentService);
         displayScore();
         generateRandomPoint();
@@ -57,8 +57,8 @@ public class PointController implements IPointController {
 
     @Override
     public int generatePointsForTieBreak(Match match, Set set, Game game, int currentService) throws SQLException {
-        initialNames(match);
         reset();
+        initialNames(match);
         displayScore();
         generateRandomTieBreakPoint(match, game, currentService);
         return idWinner;
@@ -72,7 +72,7 @@ public class PointController implements IPointController {
     }
 
     private void generateRandomTieBreakPoint(Match match, Game game, int currentService) throws SQLException {
-        point = new Point(game.getId(), match.getIdPlayer1(), match.getIdPlayer2());
+        point = new Point(game.getId(), match.getIdPlayer1(), match.getIdPlayer2(), currentService);
         pointDAO.addPoint(point);
         int totalPoints = 0;
 
@@ -178,6 +178,7 @@ public class PointController implements IPointController {
         if (isPlayer1) {
             if (p1Points == FORTY_POINTS) {
                 point.setIdPointWinner(point.getIdPlayer1());
+                hasWinner = true;
             } else {
                 p1Points++;
                 point.setScorePlayer1(SCORE[p1Points]);
@@ -185,6 +186,7 @@ public class PointController implements IPointController {
         } else {
             if (p2Points == FORTY_POINTS) {
                 point.setIdPointWinner(point.getIdPlayer2());
+                hasWinner = true;
             } else {
                 p2Points++;
                 point.setScorePlayer2(SCORE[p2Points]);
@@ -195,7 +197,10 @@ public class PointController implements IPointController {
     private void updateScorePlayerDeuce(boolean isPlayer1) {
         if (isPlayer1) {
             p1Points++;
-            if (p1Points == AD_POINTS + 1) point.setIdPointWinner(point.getIdPlayer1());
+            if (p1Points == AD_POINTS + 1) {
+                point.setIdPointWinner(point.getIdPlayer1());
+                hasWinner = true;
+            }
             else {
                 if (p2Points == AD_POINTS) {
                     p2Points--;
@@ -205,8 +210,10 @@ public class PointController implements IPointController {
             }
         } else {
             p2Points++;
-            if (p2Points == AD_POINTS + 1) point.setIdPointWinner(point.getIdPlayer2());
-            else {
+            if (p2Points == AD_POINTS + 1) {
+                point.setIdPointWinner(point.getIdPlayer2());
+                hasWinner = true;
+            } else {
                 if (p1Points == AD_POINTS) {
                     p1Points--;
                     point.setScorePlayer1(SCORE[p1Points]);
@@ -259,11 +266,15 @@ public class PointController implements IPointController {
             System.out.println(player2Prefix + player2DisplayName + " : " + point.getScorePlayer2());
 
         } else {
-            System.out.println("\nGame ball!!");
+            System.out.println("\nGame ball!!\n");
         }
     }
 
     private void reset() {
+        idMatchShow = 0;
+        nameWidth = 0;
+        namePlayer1Show = "";
+        namePlayer2Show = "";
         p1Points = 0;
         p2Points = 0;
         consecutiveFaults = 0;

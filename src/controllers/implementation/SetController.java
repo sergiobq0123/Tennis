@@ -73,6 +73,10 @@ public class SetController implements ISetController {
         set.setGamesPlayer2(setsWonPlayer2);
         set.setIdSetWinner(setWinnerId);
 
+        if(hasWinner) {
+            set.setSetOver(true);
+        }
+
         setDao.updateSet(set);
     }
 

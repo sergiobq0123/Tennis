@@ -15,12 +15,13 @@ public class Point {
         this.scorePlayer2 = "0";
     }
 
-    public Point(int idGame, int idPlayer1, int idPlayer2) {
+    public Point(int idGame, int idPlayer1, int idPlayer2, int currentService) {
         this.idPlayer1 = idPlayer1;
         this.idPlayer2 = idPlayer2;
         this.scorePlayer1 = "0";
         this.scorePlayer2 = "0";
         this.idGame = idGame;
+        this.idPlayerService = currentService;
     }
 
     public int getId() {

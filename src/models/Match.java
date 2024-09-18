@@ -25,6 +25,13 @@ public class Match {
         this.date = new Date(System.currentTimeMillis());
     }
 
+    public Match(int setsNumber, int idPlayer1, int idPlayer2) {
+        this.date = new Date(System.currentTimeMillis());
+        this.setsNumber = setsNumber;
+        this.idPlayer1 = idPlayer1;
+        this.idPlayer2 = idPlayer2;
+    }
+
     public int getId() {
         return id;
     }
@@ -63,22 +70,6 @@ public class Match {
 
     public void setIdPlayer2(int idPlayer2) {
         this.idPlayer2 = idPlayer2;
-    }
-
-    public Integer getSetsPlayer1() {
-        return setsPlayer1;
-    }
-
-    public void setSetsPlayer1(Integer setsPlayer1) {
-        this.setsPlayer1 = setsPlayer1;
-    }
-
-    public Integer getSetsPlayer2() {
-        return setsPlayer2;
-    }
-
-    public void setSetsPlayer2(Integer setsPlayer2) {
-        this.setsPlayer2 = setsPlayer2;
     }
 
     public Integer getIdMatchWinner() {

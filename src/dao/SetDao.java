@@ -26,7 +26,7 @@ public class SetDao {
     }
 
     public void addSet(Set set) throws SQLException {
-        String query = "INSERT INTO SET_ (id_player1, id_player2, id_match, games_player1, games_player2, id_set_winner) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO SET_ (id_player1, id_player2, id_match, games_player1, games_player2, id_set_winner, set_over) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = connector.getConnection();
              PreparedStatement statement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -36,6 +36,7 @@ public class SetDao {
             statement.setObject(4, set.getGamesPlayer1() != null ? set.getIdSetWinner() : null, Types.INTEGER);
             statement.setObject(5, set.getGamesPlayer2() != null ? set.getIdSetWinner() : null, Types.INTEGER);
             statement.setObject(6, set.getIdSetWinner() != null ? set.getIdSetWinner() : null, Types.INTEGER);
+            statement.setBoolean(7, set.isSetOver());
 
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
@@ -69,6 +70,7 @@ public class SetDao {
                 set.setGamesPlayer1(rs.getInt("games_player1"));
                 set.setGamesPlayer2(rs.getInt("games_player2"));
                 set.setIdSetWinner(rs.getInt("id_set_winner"));
+                set.setSetOver(rs.getBoolean("set_over"));
 
                 sets.add(set);
             }
@@ -94,13 +96,14 @@ public class SetDao {
                 set.setGamesPlayer1(rs.getInt("games_player1"));
                 set.setGamesPlayer2(rs.getInt("games_player2"));
                 set.setIdSetWinner(rs.getInt("id_set_winner"));
+                set.setSetOver(rs.getBoolean("set_over"));
             }
         }
         return set;
     }
 
     public void updateSet(Set set) throws SQLException {
-        String query = "UPDATE SET_ SET id_player1 = ?, id_player2 = ?, id_match = ?, games_player1 = ?, games_player2 = ?, id_set_winner = ? WHERE id = ?";
+        String query = "UPDATE SET_ SET id_player1 = ?, id_player2 = ?, id_match = ?, games_player1 = ?, games_player2 = ?, id_set_winner = ?, set_over = ? WHERE id = ?";
         try (Connection conn = connector.getConnection();
              PreparedStatement statement = conn.prepareStatement(query)) {
 
@@ -110,7 +113,8 @@ public class SetDao {
             statement.setObject(4, set.getGamesPlayer1() != null ? set.getGamesPlayer1(): null, Types.INTEGER);
             statement.setObject(5, set.getGamesPlayer2()!= null ? set.getGamesPlayer2() : null, Types.INTEGER);
             statement.setObject(6, set.getIdSetWinner() != null ? set.getIdSetWinner() : null, Types.INTEGER);
-            statement.setInt(7, set.getId());
+            statement.setBoolean(7, set.isSetOver());
+            statement.setInt(8, set.getId());
 
             statement.executeUpdate();
         }
