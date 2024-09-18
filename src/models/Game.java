@@ -8,19 +8,22 @@ public class Game {
     private int idPlayer1;
     private int idPlayer2;
     private int idSet;
-    private Integer pointsPlayer1;
-    private Integer pointsPlayer2;
+    private int pointsPlayer1;
+    private int pointsPlayer2;
     private Integer idGameWinner;
+    private boolean gameOver;
 
     public Game() {
 
     }
 
-    public Game(int id, int idPlayer1, int idPlayer2, int idSet) {
-        this.id = id;
+    public Game(int idPlayer1, int idPlayer2, int idSet) {
         this.idPlayer1 = idPlayer1;
         this.idPlayer2 = idPlayer2;
         this.idSet = idSet;
+        this.pointsPlayer1 = 0;
+        this.pointsPlayer2 = 0;
+        this.gameOver = false;
     }
 
     public int getId() {
@@ -55,19 +58,19 @@ public class Game {
         this.idSet = idSet;
     }
 
-    public Integer getPointsPlayer1() {
+    public int getPointsPlayer1() {
         return pointsPlayer1;
     }
 
-    public void setPointsPlayer1(Integer pointsPlayer1) {
+    public void setPointsPlayer1(int pointsPlayer1) {
         this.pointsPlayer1 = pointsPlayer1;
     }
 
-    public Integer getPointsPlayer2() {
+    public int getPointsPlayer2() {
         return pointsPlayer2;
     }
 
-    public void setPointsPlayer2(Integer pointsPlayer2) {
+    public void setPointsPlayer2(int pointsPlayer2) {
         this.pointsPlayer2 = pointsPlayer2;
     }
 
@@ -77,5 +80,13 @@ public class Game {
 
     public void setIdGameWinner(Integer idGameWinner) {
         this.idGameWinner = idGameWinner;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
     }
 }

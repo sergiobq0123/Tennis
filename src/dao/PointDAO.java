@@ -96,8 +96,6 @@ public class PointDAO {
     }
 
     public void updatePoint(Point point) throws SQLException {
-        System.out.println(point);
-        System.out.println(point.getId());
         String query = "UPDATE POINT SET id_player1 = ?, id_player2 = ?, score_player1 = ?, score_player2 = ?, id_player_service = ?, id_point_winner = ?, id_game = ? WHERE id = ?";
         try (Connection conn = connector.getConnection();
              PreparedStatement statement = conn.prepareStatement(query)) {

@@ -1,5 +1,6 @@
 import controllers.implementation.*;
 import controllers.interfaces.*;
+import dao.PlayerDAO;
 import models.*;
 
 
@@ -16,6 +17,10 @@ public class Main {
         Player player1 = new Player(1, "Rafael Nadal");
         Player player2 = new Player(2, "Djokovic");
 
+        PlayerDAO playerDAO = new PlayerDAO();
+        playerDAO.addPlayer(player1);
+        playerDAO.addPlayer(player2);
+
         /**
         IPlayerController registerController = new PlayerController();
         registerController.addPlayer(player1);
@@ -30,6 +35,7 @@ public class Main {
         */
 
        IMatchController matchController = new MatchController();
-       matchController.createMatch(3,player1, player2);
+            matchController.createMatch(3,player1, player2);
+
     }
 }

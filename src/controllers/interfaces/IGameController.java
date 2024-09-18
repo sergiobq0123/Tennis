@@ -8,5 +8,5 @@ import models.Set;
 import java.sql.SQLException;
 
 public interface IGameController {
-    Game createGame(Match match, Set set, Player player1, Player player2) throws SQLException;
+    int generateGamesForSet(Match match, Set set) throws SQLException;
 }

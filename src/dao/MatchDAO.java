@@ -25,7 +25,7 @@ public class MatchDAO {
     }
 
     public void addMatch(Match match) throws SQLException {
-        String query = "INSERT INTO MATCH_ (date, sets_number, id_player1, id_player2, sets_player1, sets_player2, id_match_winner) VALUES (?, ?, ?, ?, ?, ?,?)";
+        String query = "INSERT INTO MATCH_ (date, sets_number, id_player1, id_player2, id_match_winner) VALUES (?, ?, ?, ?,?)";
         try (Connection conn = connector.getConnection();
              PreparedStatement statement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -33,9 +33,7 @@ public class MatchDAO {
             statement.setInt(2, match.getSetsNumber());
             statement.setInt(3, match.getIdPlayer1());
             statement.setInt(4, match.getIdPlayer2());
-            statement.setObject(5, match.getSetsPlayer1() != null ? match.getSetsPlayer1() : null, Types.INTEGER);
-            statement.setObject(6, match.getSetsPlayer2() != null ? match.getSetsPlayer2() : null, Types.INTEGER);
-            statement.setObject(7, match.getIdMatchWinner() != null ? match.getIdMatchWinner() : null, Types.INTEGER);
+            statement.setObject(5, match.getIdMatchWinner() != null ? match.getIdMatchWinner() : null, Types.INTEGER);
 
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
@@ -66,8 +64,6 @@ public class MatchDAO {
                 match.setSetsNumber(rs.getInt("sets_number"));
                 match.setIdPlayer1(rs.getInt("id_player1"));
                 match.setIdPlayer2(rs.getInt("id_player2"));
-                match.setSetsPlayer1(rs.getInt("sets_player1"));
-                match.setSetsPlayer2(rs.getInt("sets_player2"));
                 match.setIdMatchWinner(rs.getInt("id_match_winner"));
 
                 matches.add(match);
@@ -92,25 +88,21 @@ public class MatchDAO {
                 match.setSetsNumber(rs.getInt("sets_number"));
                 match.setIdPlayer1(rs.getInt("id_player1"));
                 match.setIdPlayer2(rs.getInt("id_player2"));
-                match.setSetsPlayer1(rs.getInt("sets_player1"));
-                match.setSetsPlayer2(rs.getInt("sets_player2"));
                 match.setIdMatchWinner(rs.getInt("id_match_winner"));
             }
         }
         return match;
     }
 
-    public void updateSet(Match match) throws SQLException {
-        String query = "UPDATE MATCH_ SET id_player1 = ?, id_player2 = ?, sets_player1 = ?, sets_player2 = ?, id_match_winner = ? WHERE id = ?";
+    public void updateMatch(Match match) throws SQLException {
+        String query = "UPDATE MATCH_ SET id_player1 = ?, id_player2 = ?, id_match_winner = ? WHERE id = ?";
         try (Connection conn = connector.getConnection();
              PreparedStatement statement = conn.prepareStatement(query)) {
 
             statement.setInt(1, match.getIdPlayer1());
             statement.setInt(2, match.getIdPlayer2());
-            statement.setInt(3, match.getSetsPlayer1() != null ? match.getSetsPlayer1() : 0);
-            statement.setInt(4, match.getSetsPlayer2()!= null ? match.getSetsPlayer2() : 0);
-            statement.setObject(5, match.getIdMatchWinner() != null ? match.getIdMatchWinner() : null, Types.INTEGER);
-            statement.setInt(6, match.getId());
+            statement.setObject(3, match.getIdMatchWinner() != null ? match.getIdMatchWinner() : null, Types.INTEGER);
+            statement.setInt(4, match.getId());
 
             statement.executeUpdate();
         }

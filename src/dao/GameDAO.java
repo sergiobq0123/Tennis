@@ -27,16 +27,17 @@ public class GameDAO {
     }
 
     public void addGame(Game game) throws SQLException {
-        String query = "INSERT INTO GAME (id_player1, id_player2, id_set, points_player1, points_player2, id_game_winner) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO GAME (id_player1, id_player2, id_set, points_player1, points_player2, id_game_winner, game_over) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = connector.getConnection();
              PreparedStatement statement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setInt(1, game.getIdPlayer1());
             statement.setInt(2, game.getIdPlayer2());
             statement.setInt(3, game.getIdSet());
-            statement.setObject(4, game.getPointsPlayer1() != null ? game.getIdGameWinner() : null, Types.INTEGER);
-            statement.setObject(5, game.getPointsPlayer2() != null ? game.getIdGameWinner() : null, Types.INTEGER);
+            statement.setInt(4, game.getPointsPlayer1());
+            statement.setInt(5, game.getPointsPlayer2());
             statement.setObject(6, game.getIdGameWinner() != null ? game.getIdGameWinner() : null, Types.INTEGER);
+            statement.setBoolean(7, game.isGameOver());
 
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
@@ -70,7 +71,7 @@ public class GameDAO {
                 game.setPointsPlayer1(rs.getInt("points_player1"));
                 game.setPointsPlayer2(rs.getInt("points_player2"));
                 game.setIdGameWinner(rs.getInt("id_game_winner"));
-
+                game.setGameOver(rs.getBoolean("game_over"));
                 games.add(game);
             }
         }
@@ -95,13 +96,14 @@ public class GameDAO {
                 game.setPointsPlayer1(rs.getInt("points_player1"));
                 game.setPointsPlayer2(rs.getInt("points_player2"));
                 game.setIdGameWinner(rs.getInt("id_game_winner"));
+                game.setGameOver(rs.getBoolean("game_over"));
             }
         }
         return game;
     }
 
     public void updateGame(Game game) throws SQLException {
-        String query = "UPDATE GAME SET id_player1 = ?, id_player2 = ?, id_set = ?, points_player1 = ?, points_player2 = ?, id_game_winner = ? WHERE id = ?";
+        String query = "UPDATE GAME SET id_player1 = ?, id_player2 = ?, id_set = ?, points_player1 = ?, points_player2 = ?, id_game_winner = ?, game_over = ? WHERE id = ?";
         try (Connection conn = connector.getConnection();
              PreparedStatement statement = conn.prepareStatement(query)) {
 
@@ -111,7 +113,8 @@ public class GameDAO {
             statement.setInt(4, game.getPointsPlayer1());
             statement.setInt(5, game.getPointsPlayer2());
             statement.setObject(6, game.getIdGameWinner() != null ? game.getIdGameWinner() : null, Types.INTEGER);
-            statement.setInt(7, game.getId());
+            statement.setBoolean(7, game.isGameOver());
+            statement.setInt(8, game.getId());
 
             statement.executeUpdate();
         }

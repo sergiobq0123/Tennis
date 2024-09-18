@@ -59,7 +59,6 @@ public class PlayerDAO {
             if(rs.next()) {
                  player.setId(rs.getInt("id_player"));
                  player.setName(rs.getString("player_name"));
-                 System.out.println("Player retrieved: " + player.toString());
             }
         }
         return player;
