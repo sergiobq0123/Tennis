@@ -93,27 +93,67 @@ public class MatchDAO {
         }
         return match;
     }
-
-    public void updateMatch(Match match) throws SQLException {
-        String query = "UPDATE MATCH_ SET id_player1 = ?, id_player2 = ?, id_match_winner = ? WHERE id = ?";
+    public ArrayList<Match> getMatchesByPlayerId(int id) throws SQLException {
+        ArrayList<Match> matches = new ArrayList<>();
+        String query = "SELECT * FROM MATCH_ WHERE id_player1 OR id_player2 = ?";
         try (Connection conn = connector.getConnection();
              PreparedStatement statement = conn.prepareStatement(query)) {
 
-            statement.setInt(1, match.getIdPlayer1());
-            statement.setInt(2, match.getIdPlayer2());
-            statement.setObject(3, match.getIdMatchWinner() != null ? match.getIdMatchWinner() : null, Types.INTEGER);
-            statement.setInt(4, match.getId());
+            statement.setInt(1, id);
+            ResultSet rs = statement.executeQuery();
 
-            statement.executeUpdate();
+            while (rs.next()) {
+                Match match = new Match();
+                match.setId(rs.getInt("id"));
+                match.setDate(rs.getDate("date"));
+                match.setSetsNumber(rs.getInt("sets_number"));
+                match.setIdPlayer1(rs.getInt("id_player1"));
+                match.setIdPlayer2(rs.getInt("id_player2"));
+                match.setIdMatchWinner(rs.getInt("id_match_winner"));
+                matches.add(match);
+            }
         }
+        return matches;
     }
 
-    public void deleteMatch(Match match) throws SQLException {
-        String query = "DELETE FROM MATCH WHERE id = ?";
-        try (Connection conn = connector.getConnection()) {
-            PreparedStatement statement = conn.prepareStatement(query);
-            statement.setInt(1, match.getId());
-            statement.executeUpdate();
+    public int getUserWinPercentage(int id) throws SQLException {
+        int percentage = 0;
+        String query = "SELECT" +
+                "(SELECT COUNT(*) FROM MATCH_ WHERE id_match_winner = ?) * 100 / " +
+                "(SELECT COUNT(*) FROM MATCH_ WHERE id_player1 = ? OR id_player2 = ?) AS win_percentage";
+        try (Connection conn = connector.getConnection();
+             PreparedStatement statement = conn.prepareStatement(query)) {
+            statement.setInt(1, id);
+            statement.setInt(2, id);
+            statement.setInt(3, id);
+             ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                percentage = rs.getInt("win_percentage");
+            }
         }
+        return percentage;
     }
+
+public void updateMatch(Match match) throws SQLException {
+    String query = "UPDATE MATCH_ SET id_player1 = ?, id_player2 = ?, id_match_winner = ? WHERE id = ?";
+    try (Connection conn = connector.getConnection();
+         PreparedStatement statement = conn.prepareStatement(query)) {
+
+        statement.setInt(1, match.getIdPlayer1());
+        statement.setInt(2, match.getIdPlayer2());
+        statement.setObject(3, match.getIdMatchWinner() != null ? match.getIdMatchWinner() : null, Types.INTEGER);
+        statement.setInt(4, match.getId());
+
+        statement.executeUpdate();
+    }
+}
+
+public void deleteMatch(Match match) throws SQLException {
+    String query = "DELETE FROM MATCH WHERE id = ?";
+    try (Connection conn = connector.getConnection()) {
+        PreparedStatement statement = conn.prepareStatement(query);
+        statement.setInt(1, match.getId());
+        statement.executeUpdate();
+    }
+}
 }

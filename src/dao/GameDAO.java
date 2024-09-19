@@ -27,17 +27,14 @@ public class GameDAO {
     }
 
     public void addGame(Game game) throws SQLException {
-        String query = "INSERT INTO GAME (id_player1, id_player2, id_set, points_player1, points_player2, id_game_winner, game_over) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO GAME (id_player1, id_player2, id_set, id_game_winner) VALUES (?, ?, ?, ?)";
         try (Connection conn = connector.getConnection();
              PreparedStatement statement = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setInt(1, game.getIdPlayer1());
             statement.setInt(2, game.getIdPlayer2());
             statement.setInt(3, game.getIdSet());
-            statement.setInt(4, game.getPointsPlayer1());
-            statement.setInt(5, game.getPointsPlayer2());
-            statement.setObject(6, game.getIdGameWinner() != null ? game.getIdGameWinner() : null, Types.INTEGER);
-            statement.setBoolean(7, game.isGameOver());
+            statement.setObject(4, game.getIdGameWinner() != null ? game.getIdGameWinner() : null, Types.INTEGER);
 
             int affectedRows = statement.executeUpdate();
             if (affectedRows == 0) {
@@ -68,10 +65,7 @@ public class GameDAO {
                 game.setIdPlayer1(rs.getInt("id_player1"));
                 game.setIdPlayer2(rs.getInt("id_player2"));
                 game.setIdSet(rs.getInt("id_set"));
-                game.setPointsPlayer1(rs.getInt("points_player1"));
-                game.setPointsPlayer2(rs.getInt("points_player2"));
                 game.setIdGameWinner(rs.getInt("id_game_winner"));
-                game.setGameOver(rs.getBoolean("game_over"));
                 games.add(game);
             }
         }
@@ -93,29 +87,22 @@ public class GameDAO {
                 game.setIdPlayer1(rs.getInt("id_player1"));
                 game.setIdPlayer2(rs.getInt("id_player2"));
                 game.setIdSet(rs.getInt("id_set"));
-                game.setPointsPlayer1(rs.getInt("points_player1"));
-                game.setPointsPlayer2(rs.getInt("points_player2"));
                 game.setIdGameWinner(rs.getInt("id_game_winner"));
-                game.setGameOver(rs.getBoolean("game_over"));
             }
         }
         return game;
     }
 
     public void updateGame(Game game) throws SQLException {
-        String query = "UPDATE GAME SET id_player1 = ?, id_player2 = ?, id_set = ?, points_player1 = ?, points_player2 = ?, id_game_winner = ?, game_over = ? WHERE id = ?";
+        String query = "UPDATE GAME SET id_player1 = ?, id_player2 = ?, id_set = ?, id_game_winner = ? WHERE id = ?";
         try (Connection conn = connector.getConnection();
              PreparedStatement statement = conn.prepareStatement(query)) {
 
             statement.setInt(1, game.getIdPlayer1());
             statement.setInt(2, game.getIdPlayer2());
             statement.setInt(3, game.getIdSet());
-            statement.setInt(4, game.getPointsPlayer1());
-            statement.setInt(5, game.getPointsPlayer2());
-            statement.setObject(6, game.getIdGameWinner() != null ? game.getIdGameWinner() : null, Types.INTEGER);
-            statement.setBoolean(7, game.isGameOver());
-            statement.setInt(8, game.getId());
-
+            statement.setObject(4, game.getIdGameWinner() != null ? game.getIdGameWinner() : null, Types.INTEGER);
+            statement.setInt(5, game.getId());
             statement.executeUpdate();
         }
     }
@@ -127,6 +114,28 @@ public class GameDAO {
             statement.setInt(1, player.getId());
             statement.executeUpdate();
         }
+    }
+
+    public int getUserSets(int matchId, int setId, int playerId) throws SQLException {
+        int set =0;
+        String query = "SELECT COUNT(*) AS games_won " +
+                "FROM GAME g " +
+                "INNER JOIN SET_ s ON g.id_set = s.id " +
+                "INNER JOIN MATCH_ m ON s.id_match = m.id " +
+                "WHERE g.id_game_winner = ? " +
+                "AND s.id = ? " +
+                "AND m.id = ? ";
+        try (Connection conn = connector.getConnection();
+             PreparedStatement statement = conn.prepareStatement(query)) {
+            statement.setInt(1, playerId);
+            statement.setInt(2, setId);
+            statement.setInt(3, matchId);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                set = rs.getInt("games_won");;
+            }
+        }
+        return  set;
     }
 }
 
