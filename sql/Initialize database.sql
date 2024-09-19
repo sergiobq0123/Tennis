@@ -2,6 +2,13 @@ DROP DATABASE IF EXISTS TENIS;
 CREATE DATABASE TENIS;
 USE TENIS;
 
+-- Tabla de arbitros
+CREATE TABLE IF NOT EXISTS REFEREE (
+      id_referee INT auto_increment PRIMARY KEY,
+      referee_name VARCHAR(254) NOT NULL UNIQUE,
+      referee_password VARCHAR(254) NOT NULL UNIQUE
+    );
+
 -- Tabla de jugadores
 CREATE TABLE IF NOT EXISTS PLAYER (
       id_player INT auto_increment PRIMARY KEY,
