@@ -1,5 +1,6 @@
 package controllers.implementation;
 
+import controllers.interfaces.IHistoryController;
 import dao.*;
 import models.Match;
 import models.Player;
@@ -7,7 +8,7 @@ import models.Player;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class HistoryController {
+public class HistoryController implements IHistoryController {
 
     private final PlayerDAO playerDAO;
     private final PointDAO pointDAO;
@@ -23,7 +24,7 @@ public class HistoryController {
         matchDAO = new MatchDAO();
     }
 
-
+    @Override
     public void readPlayer(int id) throws SQLException {
         Player player = playerDAO.getPlayer(id);
         System.out.println(player.toString());
@@ -39,7 +40,7 @@ public class HistoryController {
         }
         System.out.println("Winner:" +matchDAO.getUserWinPercentage(id) + "%");
     }
-
+    @Override
     public void readMatch(int matchID) throws SQLException {
         Match match = matchDAO.getMatch(matchID);
         Player player1 = playerDAO.getPlayer(match.getIdPlayer1());

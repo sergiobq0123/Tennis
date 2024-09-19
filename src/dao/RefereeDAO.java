@@ -69,6 +69,21 @@ public class RefereeDAO {
         }
         return referee;
     }
+    public Referee getRefereeByName(String name) throws SQLException {
+        Referee referee = new Referee();
+        String query = "SELECT * FROM REFEREE WHERE referee_name = ?";
+        try (Connection conn = connector.getConnection()) {
+            PreparedStatement statement = conn.prepareStatement(query);
+            statement.setString(1, name);
+            ResultSet rs = statement.executeQuery();
+            if(rs.next()) {
+                referee.setId(rs.getInt("id_referee"));
+                referee.setName(rs.getString("referee_name"));
+                referee.setPassword(rs.getString("referee_password"));
+            }
+        }
+        return referee;
+    }
 
     public void updateReferee(Referee referee) throws SQLException {
         String query = "UPDATE REFEREE SET referee_name = ?, referee_password = ? WHERE id_referee = ?";

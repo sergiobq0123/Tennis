@@ -1,6 +1,7 @@
 import controllers.implementation.*;
 import controllers.interfaces.*;
 import dao.PlayerDAO;
+import dao.RefereeDAO;
 import models.*;
 
 
@@ -37,12 +38,16 @@ public class Main {
 //        IMatchController matchController = new MatchController();
 //        matchController.createMatch(5,player1, player2);
 
-        HistoryController historyController = new HistoryController();
-        System.out.println("READ PLAYER");
-        historyController.readPlayer(1);
+//        HistoryController historyController = new HistoryController();
+//        System.out.println("READ PLAYER");
+//        historyController.readPlayer(1);
+//
+//        System.out.println("READ MATCH");
+//        historyController.readMatch(12);
 
-        System.out.println("READ MATCH");
-        historyController.readMatch(12);
-
+        LoginController loginController = new LoginController();
+        Referee referee = new Referee("Arbitro","12346");
+        loginController.registerReferee(referee);
+        loginController.loginReferee(referee);
     }
 }
