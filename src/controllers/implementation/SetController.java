@@ -10,7 +10,10 @@ import java.sql.SQLException;
 
 public class SetController implements ISetController {
 
+    private static final int SETS_3 = 3;
     private static final int WINNING_SETS_3 = 2;
+
+    private static final int SETS_5 = 5;
     private static final int WINNING_SETS_5 = 3;
 
     private int numberOfSets;
@@ -57,26 +60,20 @@ public class SetController implements ISetController {
     }
 
     private void checkWinner() {
-        if (numberOfSets == WINNING_SETS_3) {
+
+        if (numberOfSets == SETS_3) {
             checkWinnerForSets(WINNING_SETS_3);
-        } else if (numberOfSets == WINNING_SETS_5) {
+        } else if (numberOfSets == SETS_5) {
             checkWinnerForSets(WINNING_SETS_5);
         }
     }
 
     private void checkWinnerForSets(int setsToWin) {
-        if (setsWonPlayer1 == setsToWin || setsWonPlayer2 == setsToWin) hasWinner = true;
+        hasWinner = (setsWonPlayer1 == setsToWin || setsWonPlayer2 == setsToWin);
     }
 
     private void updateSet(Set set) throws SQLException {
-        set.setGamesPlayer1(setsWonPlayer1);
-        set.setGamesPlayer2(setsWonPlayer2);
         set.setIdSetWinner(setWinnerId);
-
-        if(hasWinner) {
-            set.setSetOver(true);
-        }
-
         setDao.updateSet(set);
     }
 

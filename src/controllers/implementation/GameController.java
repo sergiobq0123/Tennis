@@ -5,7 +5,6 @@ import controllers.interfaces.IPointController;
 import dao.GameDAO;
 import models.Game;
 import models.Match;
-import models.Point;
 import models.Set;
 
 import java.sql.SQLException;
@@ -84,14 +83,7 @@ public class GameController implements IGameController {
     }
 
     private void updateGame(Game game) throws SQLException {
-        game.setPointsPlayer1(sumPointsPlayer1);
-        game.setPointsPlayer2(sumPointsPlayer2);
         game.setIdGameWinner(idWinner);
-
-        if(hasWinner) {
-            game.setGameOver(true);
-        }
-
         gameDAO.updateGame(game);
     }
 

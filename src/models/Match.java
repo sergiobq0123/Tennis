@@ -9,8 +9,6 @@ public class Match {
     private int setsNumber;
     private int idPlayer1;
     private int idPlayer2;
-    private Integer setsPlayer1;
-    private Integer setsPlayer2;
     private Integer idMatchWinner;
 
     public Match(int id, int setsNumber, int idPlayer1, int idPlayer2) {
@@ -78,5 +76,17 @@ public class Match {
 
     public void setIdMatchWinner(Integer idMatchWinner) {
         this.idMatchWinner = idMatchWinner;
+    }
+
+    public int foeId(int id){
+       return this.idPlayer1 == id ? this.idPlayer2 : this.idPlayer1;
+    }
+
+    @Override
+    public String toString() {
+        return "Match: " +
+                "id=" + id +
+                "; date=" + date +
+                "; setsNumber=" + setsNumber;
     }
 }

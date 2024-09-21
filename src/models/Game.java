@@ -1,17 +1,11 @@
 package models;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Game {
     private int id;
     private int idPlayer1;
     private int idPlayer2;
     private int idSet;
-    private int pointsPlayer1;
-    private int pointsPlayer2;
     private Integer idGameWinner;
-    private boolean gameOver;
 
     public Game() {
 
@@ -21,9 +15,6 @@ public class Game {
         this.idPlayer1 = idPlayer1;
         this.idPlayer2 = idPlayer2;
         this.idSet = idSet;
-        this.pointsPlayer1 = 0;
-        this.pointsPlayer2 = 0;
-        this.gameOver = false;
     }
 
     public int getId() {
@@ -58,22 +49,6 @@ public class Game {
         this.idSet = idSet;
     }
 
-    public int getPointsPlayer1() {
-        return pointsPlayer1;
-    }
-
-    public void setPointsPlayer1(int pointsPlayer1) {
-        this.pointsPlayer1 = pointsPlayer1;
-    }
-
-    public int getPointsPlayer2() {
-        return pointsPlayer2;
-    }
-
-    public void setPointsPlayer2(int pointsPlayer2) {
-        this.pointsPlayer2 = pointsPlayer2;
-    }
-
     public Integer getIdGameWinner() {
         return idGameWinner;
     }
@@ -82,11 +57,4 @@ public class Game {
         this.idGameWinner = idGameWinner;
     }
 
-    public boolean isGameOver() {
-        return gameOver;
-    }
-
-    public void setGameOver(boolean gameOver) {
-        this.gameOver = gameOver;
-    }
 }

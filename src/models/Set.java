@@ -5,19 +5,15 @@ public class Set {
     private int idPlayer1;
     private int idPlayer2;
     private int idMatch;
-    private Integer gamesPlayer1;
-    private Integer gamesPlayer2;
     private Integer idSetWinner;
-    private boolean setOver;
 
     public Set() {
     }
 
-    public Set ( int idMatch, int idPlayer1, int idPlayer2) {
+    public Set (int idMatch, int idPlayer1, int idPlayer2) {
         this.idMatch = idMatch;
         this.idPlayer1 = idPlayer1;
         this.idPlayer2 = idPlayer2;
-        this.setOver = false;
     }
 
     public int getId() {
@@ -44,14 +40,6 @@ public class Set {
         this.idPlayer1 = idPlayer1;
     }
 
-    public Integer getGamesPlayer1() {
-        return gamesPlayer1;
-    }
-
-    public void setGamesPlayer1(Integer gamesPlayer1) {
-        this.gamesPlayer1 = gamesPlayer1;
-    }
-
     public int getIdPlayer2() {
         return idPlayer2;
     }
@@ -60,27 +48,11 @@ public class Set {
         this.idPlayer2 = idPlayer2;
     }
 
-    public Integer getGamesPlayer2() {
-        return gamesPlayer2;
-    }
-
-    public void setGamesPlayer2(Integer gamesPlayer2) {
-        this.gamesPlayer2 = gamesPlayer2;
-    }
-
     public Integer getIdSetWinner() {
         return idSetWinner;
     }
 
     public void setIdSetWinner(Integer idSetWinner) {
         this.idSetWinner = idSetWinner;
-    }
-
-    public boolean isSetOver() {
-        return setOver;
-    }
-
-    public void setSetOver(boolean setOver) {
-        this.setOver = setOver;
     }
 }

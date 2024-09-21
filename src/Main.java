@@ -1,6 +1,7 @@
 import controllers.implementation.*;
 import controllers.interfaces.*;
 import dao.PlayerDAO;
+import dao.RefereeDAO;
 import models.*;
 
 
@@ -13,13 +14,13 @@ public class Main {
     public static void main(String[] args) throws SQLException {
 
         //PLAYERS BBDD-
-
-        Player player1 = new Player(1, "Rafael Nadal");
-        Player player2 = new Player(2, "Djokovic");
-
-        PlayerDAO playerDAO = new PlayerDAO();
-        playerDAO.addPlayer(player1);
-        playerDAO.addPlayer(player2);
+//
+//        Player player1 = new Player(1, "Rafael Nadal");
+//        Player player2 = new Player(2, "Djokovic");
+//
+//        PlayerDAO playerDAO = new PlayerDAO();
+//        playerDAO.addPlayer(player1);
+//        playerDAO.addPlayer(player2);
 
         /**
         IPlayerController registerController = new PlayerController();
@@ -34,8 +35,19 @@ public class Main {
         Player player3 = registerController.getPlayerById(2);
         */
 
-       IMatchController matchController = new MatchController();
-            matchController.createMatch(3,player1, player2);
+//        IMatchController matchController = new MatchController();
+//        matchController.createMatch(5,player1, player2);
 
+//        HistoryController historyController = new HistoryController();
+//        System.out.println("READ PLAYER");
+//        historyController.readPlayer(1);
+//
+//        System.out.println("READ MATCH");
+//        historyController.readMatch(12);
+
+        LoginController loginController = new LoginController();
+        Referee referee = new Referee("Arbitro","12346");
+        loginController.registerReferee(referee);
+        loginController.loginReferee(referee);
     }
 }
